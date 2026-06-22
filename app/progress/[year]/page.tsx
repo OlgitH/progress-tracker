@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import SignOutButton from "@/app/ui/sign-out-button";
+import SiteMenu from "@/app/ui/site-menu";
 
 interface GoalRef {
   id: string;
@@ -103,7 +105,6 @@ function buildSeriesByGoal(updates: ExportUpdate[]): GoalSeries[] {
 }
 
 export default function ProgressYearPage() {
-  const router = useRouter();
   const params = useParams<{ year: string }>();
   const year = parseYearParam(params?.year);
 
@@ -311,27 +312,26 @@ export default function ProgressYearPage() {
       }, [goalSeries, hoveredGoalId, loading, error]);
 
   return (
-    <main className="max-w-6xl mx-auto p-8 space-y-6">
-      <div className="flex items-center justify-between gap-3 flex-wrap">
+    <main id="main-content" className="max-w-6xl mx-auto p-8 space-y-6" tabIndex={-1}>
+      <header className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="text-sm text-gray-500 hover:text-black transition"
-          >
-            ← Back to Dashboard
-          </button>
           <h1 className="text-3xl font-bold mt-2">Progress graph for {year}</h1>
           <p className="text-sm text-gray-600 mt-1">Animated monthly trend based on your yearly updates.</p>
         </div>
 
-        <a
-          href={`/api/export/${year}`}
-          className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-100 transition"
+        <SiteMenu
+          label="Open main navigation menu"
+          items={[
+            { href: "/", label: "Dashboard" },
+            { href: "/new", label: "Add Monthly Update" },
+            { href: "/goals", label: "My goals" },
+            { href: `/progress/${year}`, label: `Progress graph (${year})` },
+            { href: `/api/export/${year}`, label: `Open raw JSON (${year})` },
+          ]}
         >
-          Open raw JSON
-        </a>
-      </div>
+          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
+        </SiteMenu>
+      </header>
 
       {loading ? (
         <div className="rounded-xl border p-8 text-gray-600">Loading yearly progress...</div>

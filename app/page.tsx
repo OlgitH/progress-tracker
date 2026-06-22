@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import SignOutButton from "@/app/ui/sign-out-button";
+import SiteMenu from "@/app/ui/site-menu";
 
 interface UpdateItem {
   id: string;
@@ -187,34 +188,24 @@ export default async function Home() {
   });
 
   return (
-    <main className="max-w-6xl mx-auto p-8">
-      <div className="flex justify-between items-center mb-8 gap-4 flex-wrap">
+    <main id="main-content" className="max-w-6xl mx-auto p-8" tabIndex={-1}>
+      <header className="flex justify-between items-center mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="text-4xl font-bold">Studio Progress Tracker</h1>
           <p className="text-sm text-gray-500 mt-1 hidden sm:block">{user.email}</p>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          <Link
-            href="/goals"
-            className="border border-black px-4 py-2 rounded hover:bg-gray-100 transition"
-          >
-            My goals
-          </Link>
-          <Link
-            href={`/progress/${currentYear}`}
-            className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-100 transition"
-          >
-            Export {currentYear}
-          </Link>
-          <SignOutButton />
-          <Link
-            href="/new"
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
-          >
-            Add Monthly Update
-          </Link>
-        </div>
-      </div>
+        <SiteMenu
+          label="Open main navigation menu"
+          items={[
+            { href: "/", label: "Dashboard" },
+            { href: "/new", label: "Add Monthly Update" },
+            { href: "/goals", label: "My goals" },
+            { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
+          ]}
+        >
+          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
+        </SiteMenu>
+      </header>
 
       {goals.length === 0 && updates.length === 0 && (
         <div className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-gray-600">

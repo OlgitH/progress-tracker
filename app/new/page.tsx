@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SignOutButton from "@/app/ui/sign-out-button";
+import SiteMenu from "@/app/ui/site-menu";
 
 interface GoalItem {
   id: string;
@@ -17,6 +18,7 @@ function isMissingUserIdColumnError(message: string) {
 
 export default function NewEntryPage() {
   const router = useRouter();
+  const currentYear = new Date().getFullYear();
   const [userId, setUserId] = useState<string | null>(null);
   const [goals, setGoals] = useState<GoalItem[]>([]);
   const [goalId, setGoalId] = useState("");
@@ -109,27 +111,21 @@ export default function NewEntryPage() {
   const selectedGoal = useMemo(() => goals.find((item) => item.id === goalId), [goals, goalId]);
 
   return (
-    <main className="max-w-xl mx-auto p-8">
-      <div className="flex justify-end mb-4 gap-3">
-        <button
-          type="button"
-          onClick={() => router.push("/goals")}
-          className="border border-gray-300 px-3 py-2 rounded hover:bg-gray-100 transition"
+    <main id="main-content" className="max-w-xl mx-auto p-8" tabIndex={-1}>
+      <header className="flex justify-between items-center mb-6 gap-3">
+        <h1 className="text-3xl font-bold">Monthly Goal Check-In</h1>
+        <SiteMenu
+          label="Open main navigation menu"
+          items={[
+            { href: "/", label: "Dashboard" },
+            { href: "/new", label: "Add Monthly Update" },
+            { href: "/goals", label: "My goals" },
+            { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
+          ]}
         >
-          My goals
-        </button>
-        <SignOutButton />
-      </div>
-
-      <button
-        onClick={() => router.push("/")}
-        className="flex items-center text-sm text-gray-500 hover:text-black mb-6 transition gap-1 group"
-      >
-        <span className="transform group-hover:-translate-x-0.5 transition-transform">←</span>
-        Back to Dashboard
-      </button>
-
-      <h1 className="text-3xl font-bold mb-6">Monthly Goal Check-In</h1>
+          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
+        </SiteMenu>
+      </header>
 
       {goals.length === 0 ? (
         <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-950">
@@ -142,9 +138,10 @@ export default function NewEntryPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-2 font-medium">Goal</label>
+          <label htmlFor="goal-select" className="block mb-2 font-medium">Goal</label>
 
           <select
+            id="goal-select"
             value={goalId}
             onChange={(e) => setGoalId(e.target.value)}
             className="w-full border rounded p-2"
@@ -160,9 +157,10 @@ export default function NewEntryPage() {
         </div>
 
         <div>
-          <label className="block mb-2 font-medium">Score (1–10)</label>
+          <label htmlFor="score-input" className="block mb-2 font-medium">Score (1-10)</label>
 
           <input
+            id="score-input"
             type="number"
             min={1}
             max={10}
@@ -173,9 +171,10 @@ export default function NewEntryPage() {
         </div>
 
         <div>
-          <label className="block mb-2 font-medium">What did you do this month?</label>
+          <label htmlFor="achievements-input" className="block mb-2 font-medium">What did you do this month?</label>
 
           <textarea
+            id="achievements-input"
             value={achievements}
             onChange={(e) => setAchievements(e.target.value)}
             rows={4}
@@ -184,9 +183,10 @@ export default function NewEntryPage() {
         </div>
 
         <div>
-          <label className="block mb-2 font-medium">Notes</label>
+          <label htmlFor="notes-input" className="block mb-2 font-medium">Notes</label>
 
           <textarea
+            id="notes-input"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={4}

@@ -3,7 +3,11 @@
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-export default function SignOutButton() {
+interface SignOutButtonProps {
+  className?: string;
+}
+
+export default function SignOutButton({ className }: SignOutButtonProps) {
   const router = useRouter();
 
   async function handleSignOut() {
@@ -16,7 +20,8 @@ export default function SignOutButton() {
     <button
       type="button"
       onClick={handleSignOut}
-      className="border border-gray-300 px-3 py-2 rounded hover:bg-gray-100 transition"
+      aria-label="Sign out"
+      className={className ?? "border border-gray-300 px-3 py-2 rounded hover:bg-gray-100 transition"}
     >
       Sign Out
     </button>

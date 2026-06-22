@@ -58,7 +58,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="max-w-md mx-auto p-8">
+    <main id="main-content" className="max-w-md mx-auto p-8" tabIndex={-1}>
       <h1 className="text-3xl font-bold mb-2">Sign In</h1>
       <p className="text-sm text-gray-600 mb-6">
         Use your account to access your own progress updates.
@@ -66,8 +66,9 @@ export default function LoginPage() {
 
       <form onSubmit={handleSignIn} className="space-y-4">
         <div>
-          <label className="block mb-2 font-medium">Email</label>
+          <label htmlFor="email-input" className="block mb-2 font-medium">Email</label>
           <input
+            id="email-input"
             type="email"
             required
             value={email}
@@ -77,8 +78,9 @@ export default function LoginPage() {
         </div>
 
         <div>
-          <label className="block mb-2 font-medium">Password</label>
+          <label htmlFor="password-input" className="block mb-2 font-medium">Password</label>
           <input
+            id="password-input"
             type="password"
             required
             minLength={6}

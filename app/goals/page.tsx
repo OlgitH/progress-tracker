@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SignOutButton from "@/app/ui/sign-out-button";
+import SiteMenu from "@/app/ui/site-menu";
 
 interface GoalRow {
   id: string;
@@ -18,6 +19,7 @@ function activeCount(goals: GoalRow[]) {
 
 export default function GoalsPage() {
   const router = useRouter();
+  const currentYear = new Date().getFullYear();
   const [userId, setUserId] = useState<string | null>(null);
   const [goals, setGoals] = useState<GoalRow[]>([]);
   const [newGoal, setNewGoal] = useState("");
@@ -173,33 +175,27 @@ export default function GoalsPage() {
   }
 
   return (
-    <main className="max-w-3xl mx-auto p-8 space-y-6">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
+    <main id="main-content" className="max-w-3xl mx-auto p-8 space-y-6" tabIndex={-1}>
+      <header className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="text-sm text-gray-500 hover:text-black transition"
-          >
-            ← Back to Dashboard
-          </button>
           <h1 className="text-3xl font-bold mt-2">My goals</h1>
           <p className="text-sm text-gray-600 mt-1">
             Set up to 8 active goals. Removing a goal archives it, so existing updates keep their history.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => router.push("/new")}
-            className="border border-gray-300 px-3 py-2 rounded hover:bg-gray-100 transition"
-          >
-            Add update
-          </button>
-          <SignOutButton />
-        </div>
-      </div>
+        <SiteMenu
+          label="Open main navigation menu"
+          items={[
+            { href: "/", label: "Dashboard" },
+            { href: "/new", label: "Add Monthly Update" },
+            { href: "/goals", label: "My goals" },
+            { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
+          ]}
+        >
+          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
+        </SiteMenu>
+      </header>
 
       <section className="rounded-xl border bg-white p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -218,7 +214,10 @@ export default function GoalsPage() {
         </div>
 
         <div className="flex gap-3 flex-col sm:flex-row">
+          <label htmlFor="new-goal-input" className="sr-only">New goal name</label>
           <input
+            id="new-goal-input"
+            aria-label="New goal name"
             value={newGoal}
             onChange={(e) => setNewGoal(e.target.value)}
             placeholder="e.g. Client outreach"
@@ -232,6 +231,7 @@ export default function GoalsPage() {
           {activeGoals.map((goal) => (
             <div key={goal.id} className="flex items-center gap-3 rounded-lg border p-3">
               <input
+                aria-label={`Goal name for ${goal.name}`}
                 value={goal.name}
                 onChange={(e) =>
                   setGoals((current) =>
