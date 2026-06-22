@@ -201,7 +201,7 @@ export default async function Home() {
             My goals
           </Link>
           <Link
-            href={`/api/export/${currentYear}`}
+            href={`/progress/${currentYear}`}
             className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-100 transition"
           >
             Export {currentYear}
