@@ -22,10 +22,10 @@ async function resolveYear(
 }
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: { year?: string } | Promise<{ year?: string }> }
 ) {
-  const year = await resolveYear(_request, params);
+  const year = await resolveYear(request, params);
 
   if (!year) {
     return NextResponse.json(
