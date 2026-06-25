@@ -8,37 +8,6 @@ const slackProvider = "slack_oidc" as const;
 const slackTeamId =
   process.env.NEXT_PUBLIC_SLACK_TEAM_ID?.trim() ||
   process.env.NEXT_PUBLIC_TEAM_ID?.trim();
-const slackWorkspaceUrl = process.env.NEXT_PUBLIC_SLACK_WORKSPACE_URL?.trim();
-const slackWorkspaceDomain = process.env.NEXT_PUBLIC_SLACK_WORKSPACE_DOMAIN?.trim();
-
-function extractSlackWorkspaceDomain(input?: string) {
-  if (!input) {
-    return "";
-  }
-
-  const value = input.trim();
-
-  if (!value) {
-    return "";
-  }
-
-  // Accept either full URL (https://workspace.slack.com) or a raw workspace slug.
-  const fromUrl = /^https?:\/\/([a-z0-9-]+)\.slack\.com\/?$/i.exec(value);
-  if (fromUrl?.[1]) {
-    return fromUrl[1].toLowerCase();
-  }
-
-  const rawSlug = /^[a-z0-9-]+$/i.exec(value);
-  if (rawSlug?.[0]) {
-    return rawSlug[0].toLowerCase();
-  }
-
-  return "";
-}
-
-const slackWorkspaceHintDomain =
-  extractSlackWorkspaceDomain(slackWorkspaceDomain) ||
-  extractSlackWorkspaceDomain(slackWorkspaceUrl);
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -53,7 +22,7 @@ export default function LoginPage() {
   }, [searchParams]);
 
   async function startSlackOAuth() {
-    if (!slackTeamId && !slackWorkspaceHintDomain) {
+    if (!slackTeamId) {
       return "Missing NEXT_PUBLIC_SLACK_TEAM_ID (or NEXT_PUBLIC_TEAM_ID) in environment.";
     }
 
@@ -64,16 +33,9 @@ export default function LoginPage() {
       callbackUrl.searchParams.set("next", nextPath);
     }
 
-    const queryParams: Record<string, string> = {};
-
-    if (slackTeamId) {
-      queryParams.team = slackTeamId;
-    }
-
-    if (slackWorkspaceHintDomain) {
-      // Additional hint for workspace routing when Slack asks for workspace discovery.
-      queryParams.domain = slackWorkspaceHintDomain;
-    }
+    const queryParams: Record<string, string> = {
+      team: slackTeamId,
+    };
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: slackProvider,
@@ -96,12 +58,8 @@ export default function LoginPage() {
     const authUrl = new URL(data.url);
 
     // Keep team hint enforced to avoid Slack asking for workspace URL.
-    if (slackTeamId && !authUrl.searchParams.get("team")) {
+    if (!authUrl.searchParams.get("team")) {
       authUrl.searchParams.set("team", slackTeamId);
-    }
-
-    if (slackWorkspaceHintDomain && !authUrl.searchParams.get("domain")) {
-      authUrl.searchParams.set("domain", slackWorkspaceHintDomain);
     }
 
     window.location.assign(authUrl.toString());
