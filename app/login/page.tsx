@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -9,7 +9,7 @@ const slackTeamId =
   process.env.NEXT_PUBLIC_SLACK_TEAM_ID?.trim() ||
   process.env.NEXT_PUBLIC_TEAM_ID?.trim();
 
-export default function LoginPage() {
+function LoginPageContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -110,5 +110,13 @@ export default function LoginPage() {
         </p>
       )}
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<main id="main-content" className="max-w-md mx-auto p-8" tabIndex={-1} />}>
+      <LoginPageContent />
+    </Suspense>
   );
 }
