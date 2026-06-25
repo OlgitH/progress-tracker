@@ -63,6 +63,12 @@ export default async function Home() {
     redirect("/login");
   }
 
+  const userLabel =
+    user.email ||
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    "Signed in with Slack";
+
   const [goalsResult, updatesResult] = await Promise.all([
     supabase
       .from("goals")
@@ -192,7 +198,7 @@ export default async function Home() {
       <header className="flex justify-between items-center mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="text-4xl font-bold">Studio Progress Tracker</h1>
-          <p className="text-sm text-gray-500 mt-1 hidden sm:block">{user.email}</p>
+          <p className="text-sm text-gray-500 mt-1 hidden sm:block">{userLabel}</p>
         </div>
         <SiteMenu
           label="Open main navigation menu"

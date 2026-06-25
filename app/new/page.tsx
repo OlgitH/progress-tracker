@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SignOutButton from "@/app/ui/sign-out-button";
@@ -79,9 +79,18 @@ export default function NewEntryPage() {
       return;
     }
 
+    const goalName = selectedGoal?.name.trim();
+
+    if (!goalName) {
+      setMessage("Error: Select a valid goal before saving an update.");
+      setLoading(false);
+      return;
+    }
+
     const { error } = await supabase.from("updates").insert({
       user_id: userId,
       goal_id: goalId,
+      goal: goalName,
       score,
       achievements,
       notes,
@@ -108,7 +117,7 @@ export default function NewEntryPage() {
     setLoading(false);
   }
 
-  const selectedGoal = useMemo(() => goals.find((item) => item.id === goalId), [goals, goalId]);
+  const selectedGoal = goals.find((item) => item.id === goalId);
 
   return (
     <main id="main-content" className="max-w-xl mx-auto p-8" tabIndex={-1}>

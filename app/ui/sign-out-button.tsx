@@ -11,7 +11,7 @@ export default function SignOutButton({ className }: SignOutButtonProps) {
   const router = useRouter();
 
   async function handleSignOut() {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "global" });
     router.replace("/login");
     router.refresh();
   }
