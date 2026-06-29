@@ -323,8 +323,8 @@ export default function ProgressYearPage() {
           label="Open main navigation menu"
           items={[
             { href: "/", label: "Dashboard" },
-            { href: "/new", label: "Add Monthly Update" },
             { href: "/goals", label: "My goals" },
+            { href: "/new", label: "Add Monthly Update" },
             { href: `/progress/${year}`, label: `Progress graph (${year})` },
             { href: `/api/export/${year}`, label: `Open raw JSON (${year})` },
           ]}

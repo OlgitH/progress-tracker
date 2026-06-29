@@ -86,7 +86,7 @@ export default async function Home() {
     if (isMissingGoalsSetupError(goalsResult.error.message)) {
       return (
         <main className="max-w-3xl mx-auto p-8 space-y-4">
-          <h1 className="text-3xl font-bold">Studio Progress Tracker</h1>
+          <h1 className="text-xl md:text-2xl font-bold">Studio Progress Tracker</h1>
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-950 space-y-3">
             <h2 className="text-xl font-semibold">Goals table still needs to be created</h2>
             <p>
@@ -197,15 +197,15 @@ export default async function Home() {
     <main id="main-content" className="max-w-6xl mx-auto p-8" tabIndex={-1}>
       <header className="flex justify-between items-center mb-8 gap-4 flex-wrap">
         <div>
-          <h1 className="text-4xl font-bold">Studio Progress Tracker</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Studio Progress Tracker</h1>
           <p className="text-sm text-gray-500 mt-1 hidden sm:block">{userLabel}</p>
         </div>
         <SiteMenu
           label="Open main navigation menu"
           items={[
             { href: "/", label: "Dashboard" },
-            { href: "/new", label: "Add Monthly Update" },
             { href: "/goals", label: "My goals" },
+            { href: "/new", label: "Add Monthly Update" },
             { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
           ]}
         >
@@ -228,7 +228,7 @@ export default async function Home() {
 
       <div className="grid gap-8">
         {sections.map((section) => (
-          <section key={section.key} className="border rounded-xl p-6 shadow-sm bg-white">
+          <section key={section.key} className="border rounded-xl p-6 shadow-sm bg-[darkblue]">
             <div className="flex items-center gap-3 mb-6 border-b pb-4 flex-wrap">
               <h2 className="text-2xl font-bold tracking-tight">{section.label}</h2>
               {section.archivedAt && !section.legacy && (
@@ -242,7 +242,7 @@ export default async function Home() {
             </div>
 
             {section.updates.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-gray-200 p-5 text-sm text-gray-500">
+              <div className="rounded-lg border-gray-200 p-5 text-sm text-gray-500">
                 No updates yet for this goal.
               </div>
             ) : (

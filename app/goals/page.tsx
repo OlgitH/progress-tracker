@@ -188,8 +188,8 @@ export default function GoalsPage() {
           label="Open main navigation menu"
           items={[
             { href: "/", label: "Dashboard" },
-            { href: "/new", label: "Add Monthly Update" },
             { href: "/goals", label: "My goals" },
+            { href: "/new", label: "Add Monthly Update" },
             { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
           ]}
         >
@@ -197,7 +197,7 @@ export default function GoalsPage() {
         </SiteMenu>
       </header>
 
-      <section className="rounded-xl border bg-white p-5 space-y-4">
+      <section className="rounded-xl border bg-[darkblue] p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div>
             <h2 className="text-xl font-semibold">Active goals</h2>
@@ -255,7 +255,7 @@ export default function GoalsPage() {
         </div>
       </section>
 
-      <section className="rounded-xl border bg-white p-5 space-y-4">
+      <section className="rounded-xl border bg-[darkblue] p-5 space-y-4">
         <h2 className="text-xl font-semibold">Archived goals</h2>
         <div className="space-y-3">
           {archivedGoals.map((goal) => (
