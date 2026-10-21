@@ -8,7 +8,15 @@ const initialState: FeedbackState = { error: null };
 const fieldClass =
   "w-full rounded border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400";
 
-export default function FeedbackForm({ exchangeId }: { exchangeId: string }) {
+export default function FeedbackForm({
+  exchangeId,
+  initialValue,
+  initialComments,
+}: {
+  exchangeId: string;
+  initialValue: number | null;
+  initialComments: string | null;
+}) {
   const [state, formAction, pending] = useActionState(submitFeedback.bind(null, exchangeId), initialState);
 
   return (
@@ -24,7 +32,7 @@ export default function FeedbackForm({ exchangeId }: { exchangeId: string }) {
           min="0"
           max="10"
           step="1"
-          required
+          defaultValue={initialValue ?? undefined}
           className={fieldClass}
         />
       </div>
@@ -33,7 +41,13 @@ export default function FeedbackForm({ exchangeId }: { exchangeId: string }) {
         <label htmlFor="exchanger_comments" className="block text-sm font-medium mb-1">
           Your comments (optional)
         </label>
-        <textarea id="exchanger_comments" name="exchanger_comments" rows={3} className={fieldClass} />
+        <textarea
+          id="exchanger_comments"
+          name="exchanger_comments"
+          rows={3}
+          defaultValue={initialComments ?? ""}
+          className={fieldClass}
+        />
       </div>
 
       {state.error ? (
@@ -42,13 +56,30 @@ export default function FeedbackForm({ exchangeId }: { exchangeId: string }) {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded bg-black px-5 py-2 text-white hover:bg-gray-800 transition disabled:opacity-60"
-      >
-        {pending ? "Saving…" : "Send feedback"}
-      </button>
+      <p className="text-sm text-white/70">
+        Save as draft to come back and edit later. Once you submit, your feedback is final and can&apos;t be changed.
+      </p>
+
+      <div className="flex gap-3 flex-wrap">
+        <button
+          type="submit"
+          name="intent"
+          value="draft"
+          disabled={pending}
+          className="rounded border border-white/60 px-5 py-2 text-white hover:bg-white/10 transition disabled:opacity-60"
+        >
+          {pending ? "Saving…" : "Save draft"}
+        </button>
+        <button
+          type="submit"
+          name="intent"
+          value="submit"
+          disabled={pending}
+          className="rounded bg-black px-5 py-2 text-white hover:bg-gray-800 transition disabled:opacity-60"
+        >
+          {pending ? "Saving…" : "Submit feedback"}
+        </button>
+      </div>
     </form>
   );
 }

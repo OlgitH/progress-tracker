@@ -37,8 +37,15 @@ function text(value: string | null) {
   return value?.trim() ? value : "None";
 }
 
-export default async function ExchangeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ExchangeDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ notice?: string }>;
+}) {
   const { id } = await params;
+  const { notice } = await searchParams;
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -75,6 +82,12 @@ export default async function ExchangeDetailPage({ params }: { params: Promise<{
         </Link>
       </header>
 
+      {notice === "draft" ? (
+        <p role="status" className="mb-6 rounded border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900">
+          Draft saved. You can keep editing it until you submit.
+        </p>
+      ) : null}
+
       <section className="rounded-xl border border-white/20 bg-white/10 p-6 space-y-6">
         <dl className="grid gap-6 sm:grid-cols-2">
           <Field label="Exchanger (helped)">{exchange.exchanger?.full_name ?? "A group"}</Field>
@@ -85,7 +98,9 @@ export default async function ExchangeDetailPage({ params }: { params: Promise<{
           </Field>
           <Field label="Logged on">{date(exchange.created_at)}</Field>
           <Field label="Exchanger feedback">
-            {exchange.exchanger_responded_at ? `Given ${date(exchange.exchanger_responded_at)}` : "Awaiting feedback"}
+            {exchange.exchanger_responded_at
+              ? `Given ${date(exchange.exchanger_responded_at)}`
+              : `Awaiting feedback from ${exchange.exchanger?.full_name ?? "the Exchanger"}`}
           </Field>
         </dl>
 
@@ -102,7 +117,17 @@ export default async function ExchangeDetailPage({ params }: { params: Promise<{
           <Field label="Comments">{text(exchange.exchangee_comments)}</Field>
         </dl>
 
-        <h2 className="text-lg font-semibold border-t border-white/20 pt-4">From the Exchanger</h2>
+        <div className="flex items-center justify-between gap-4 border-t border-white/20 pt-4">
+          <h2 className="text-lg font-semibold">From the Exchanger</h2>
+          {exchange.exchanger?.id === me.id && !exchange.exchanger_responded_at ? (
+            <Link
+              href={`/social-exchange/${exchange.id}/feedback`}
+              className="rounded bg-white px-3 py-1.5 text-sm font-medium text-black hover:bg-gray-200 transition"
+            >
+              {exchange.value_to_exchanger !== null || exchange.exchanger_comments ? "Edit your feedback" : "Add your feedback"}
+            </Link>
+          ) : null}
+        </div>
         <dl className="space-y-6">
           <Field label="Value to the Exchanger">{score(exchange.value_to_exchanger)}</Field>
           <Field label="Comments">{text(exchange.exchanger_comments)}</Field>

@@ -1,5 +1,6 @@
 export interface ExchangeRow {
   id: string;
+  seed_ref?: string | null;
   hours: number;
   exchanged_on: string;
   description: string;
@@ -68,6 +69,8 @@ export function summariseExchanges(rows: ExchangeRow[], memberId: string, now = 
     averageSocial: average(rows.map((row) => row.social_value)),
     averagePersonal: average(rows.map((row) => valueToMember(row, memberId))),
     awaitingFeedback: given.filter((row) => !row.exchanger_responded_at),
+    // Exchanges this member logged where the helper hasn't submitted yet (imported history is excluded).
+    awaitingOthers: received.filter((row) => row.exchanger && !row.exchanger_responded_at && !row.seed_ref),
     months,
     recent: [...rows].sort((a, b) => b.exchanged_on.localeCompare(a.exchanged_on)).slice(0, 8),
   };

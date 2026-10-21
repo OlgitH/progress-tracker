@@ -97,6 +97,10 @@ export async function logExchange(
       ].join("\n")
     );
 
+    if (!result.ok) {
+      console.error(`Social Exchange Slack notification failed: ${result.reason}`);
+    }
+
     notice = result.ok ? "notified" : "saved-no-slack";
   }
 

@@ -11,6 +11,8 @@ interface FeedbackExchange {
   exchanged_on: string;
   description: string;
   exchanger_responded_at: string | null;
+  value_to_exchanger: number | null;
+  exchanger_comments: string | null;
   exchanger: { id: string; full_name: string } | null;
   exchangee: { id: string; full_name: string } | null;
 }
@@ -30,7 +32,7 @@ export default async function ExchangeFeedbackPage({ params }: { params: Promise
   const { data } = await supabase
     .from("social_exchanges")
     .select(
-      "id, hours, exchanged_on, description, exchanger_responded_at, exchanger:members!social_exchanges_exchanger_id_fkey(id, full_name), exchangee:members!social_exchanges_exchangee_id_fkey(id, full_name)"
+      "id, hours, exchanged_on, description, exchanger_responded_at, value_to_exchanger, exchanger_comments, exchanger:members!social_exchanges_exchanger_id_fkey(id, full_name), exchangee:members!social_exchanges_exchangee_id_fkey(id, full_name)"
     )
     .eq("id", id)
     .maybeSingle();
@@ -69,12 +71,16 @@ export default async function ExchangeFeedbackPage({ params }: { params: Promise
 
       {exchange.exchanger_responded_at ? (
         <p role="status" className="rounded border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900">
-          You&apos;ve already given feedback on this exchange. Thank you!
+          You&apos;ve already submitted feedback on this exchange. Thank you!
         </p>
       ) : (
         <>
           <p className="mb-6 text-white/80">Please give your feedback on this exchange from your perspective.</p>
-          <FeedbackForm exchangeId={exchange.id} />
+          <FeedbackForm
+            exchangeId={exchange.id}
+            initialValue={exchange.value_to_exchanger}
+            initialComments={exchange.exchanger_comments}
+          />
         </>
       )}
     </main>

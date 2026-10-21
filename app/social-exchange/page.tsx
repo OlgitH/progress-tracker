@@ -48,7 +48,7 @@ export default async function SocialExchangePage({
     ? await supabase
         .from("social_exchanges")
         .select(
-          "id, hours, exchanged_on, description, social_value, value_to_exchangee, value_to_exchanger, exchanger_responded_at, exchanger:members!social_exchanges_exchanger_id_fkey(id, full_name), exchangee:members!social_exchanges_exchangee_id_fkey(id, full_name)"
+          "id, seed_ref, hours, exchanged_on, description, social_value, value_to_exchangee, value_to_exchanger, exchanger_responded_at, exchanger:members!social_exchanges_exchanger_id_fkey(id, full_name), exchangee:members!social_exchanges_exchangee_id_fkey(id, full_name)"
         )
     : { data: null, error: null };
 
@@ -124,6 +124,24 @@ export default async function SocialExchangePage({
                   {row.exchangee?.full_name ?? "A member"} logged an exchange with you on{" "}
                   {new Date(row.exchanged_on).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
                 </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {summary.awaitingOthers.length ? (
+        <section aria-labelledby="awaiting-heading" className="mb-8 rounded-xl border border-white/20 bg-white/10 p-5">
+          <h2 id="awaiting-heading" className="font-semibold mb-2">Awaiting feedback from others</h2>
+          <ul className="space-y-1 text-sm">
+            {summary.awaitingOthers.map((row) => (
+              <li key={row.id}>
+                <Link href={`/social-exchange/${row.id}`} className="underline">
+                  Awaiting feedback from {row.exchanger?.full_name}
+                </Link>{" "}
+                <span className="text-white/70">
+                  · {new Date(row.exchanged_on).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                </span>
               </li>
             ))}
           </ul>
