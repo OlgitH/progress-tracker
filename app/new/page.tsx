@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import SignOutButton from "@/app/ui/sign-out-button";
-import SiteMenu from "@/app/ui/site-menu";
 
 interface GoalItem {
   id: string;
@@ -110,7 +108,7 @@ export default function NewEntryPage() {
       setNotes("");
 
       setTimeout(() => {
-        router.push("/");
+        router.push("/my-goals");
       }, 1000);
     }
 
@@ -123,17 +121,6 @@ export default function NewEntryPage() {
     <main id="main-content" className="max-w-xl mx-auto p-8" tabIndex={-1}>
       <header className="flex justify-between items-center mb-6 gap-3">
         <h1 className="text-3xl font-bold">Monthly Goal Check-In</h1>
-        <SiteMenu
-          label="Open main navigation menu"
-          items={[
-            { href: "/", label: "Dashboard" },
-            { href: "/new", label: "Add Monthly Update" },
-            { href: "/goals", label: "My goals" },
-            { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
-          ]}
-        >
-          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
-        </SiteMenu>
       </header>
 
       {goals.length === 0 ? (

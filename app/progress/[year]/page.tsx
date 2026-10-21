@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useParams } from "next/navigation";
-import SignOutButton from "@/app/ui/sign-out-button";
-import SiteMenu from "@/app/ui/site-menu";
 
 interface GoalRef {
   id: string;
@@ -318,19 +316,6 @@ export default function ProgressYearPage() {
           <h1 className="text-3xl font-bold mt-2">Progress graph for {year}</h1>
           <p className="text-sm text-gray-600 mt-1">Animated monthly trend based on your yearly updates.</p>
         </div>
-
-        <SiteMenu
-          label="Open main navigation menu"
-          items={[
-            { href: "/", label: "Dashboard" },
-            { href: "/goals", label: "My goals" },
-            { href: "/new", label: "Add Monthly Update" },
-            { href: `/progress/${year}`, label: `Progress graph (${year})` },
-            { href: `/api/export/${year}`, label: `Open raw JSON (${year})` },
-          ]}
-        >
-          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
-        </SiteMenu>
       </header>
 
       {loading ? (

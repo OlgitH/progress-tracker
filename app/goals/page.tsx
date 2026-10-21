@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import SignOutButton from "@/app/ui/sign-out-button";
-import SiteMenu from "@/app/ui/site-menu";
 
 interface GoalRow {
   id: string;
@@ -183,18 +181,6 @@ export default function GoalsPage() {
             Set up to 8 active goals. Removing a goal archives it, so existing updates keep their history.
           </p>
         </div>
-
-        <SiteMenu
-          label="Open main navigation menu"
-          items={[
-            { href: "/", label: "Dashboard" },
-            { href: "/goals", label: "My goals" },
-            { href: "/new", label: "Add Monthly Update" },
-            { href: `/progress/${currentYear}`, label: `Progress graph (${currentYear})` },
-          ]}
-        >
-          <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
-        </SiteMenu>
       </header>
 
       <section className="rounded-xl border bg-[darkblue] p-5 space-y-4">
