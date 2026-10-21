@@ -180,9 +180,15 @@ export default async function SocialExchangePage({
                 const other = gave ? row.exchangee : row.exchanger;
 
                 return (
-                  <li key={row.id} className="rounded-lg bg-white/10 p-4">
+                  <li key={row.id}>
+                    <Link
+                      href={`/social-exchange/${row.id}`}
+                      className={`group block rounded-lg p-4 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-white ${
+                        gave ? "bg-[#8a6bb0] hover:bg-[#9a7cbf]" : "bg-teal-600 hover:bg-teal-500"
+                      }`}
+                    >
                     <div className="flex justify-between gap-3 flex-wrap text-sm">
-                      <span className="font-medium">
+                      <span className="font-medium group-hover:underline group-focus-visible:underline">
                         {gave ? "You helped" : "Helped by"} {other?.full_name ?? "a group"}
                       </span>
                       <span className="text-white/70">
@@ -195,6 +201,7 @@ export default async function SocialExchangePage({
                       </span>
                     </div>
                     <p className="text-sm text-white/80 mt-1 line-clamp-2">{row.description}</p>
+                    </Link>
                   </li>
                 );
               })}
