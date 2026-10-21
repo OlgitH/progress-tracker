@@ -127,7 +127,7 @@ export default function NewEntryPage() {
         <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-950">
           <p className="font-semibold">You do not have any active goals yet.</p>
           <p className="text-sm mt-1">
-            Add up to 8 goals from <button type="button" onClick={() => router.push("/goals")} className="underline">My goals</button> before creating an update.
+            Add up to 8 goals from <button type="button" onClick={() => router.push("/my-goals/edit")} className="underline">My goals</button> before creating an update.
           </p>
         </div>
       ) : null}

@@ -15,10 +15,10 @@ export function getNavItems(year: number): NavItem[] {
       href: "/my-goals",
       label: "My Studio goals",
       children: [
-        { href: "/goals", label: "Edit goals" },
-        { href: "/new", label: "Post an update" },
+        { href: "/my-goals/edit", label: "Edit goals" },
+        { href: "/my-goals/updates/new", label: "Post an update" },
         {
-          href: `/progress/${year}`,
+          href: `/my-goals/progress/${year}`,
           label: `Progress graph (${year})`,
           children: [{ href: `/api/export/${year}`, label: `Open raw JSON (${year})` }],
         },

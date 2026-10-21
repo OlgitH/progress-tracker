@@ -202,19 +202,19 @@ export default async function Home() {
 
       <div className="mb-8 flex flex-wrap gap-3">
         <Link
-          href="/goals"
+          href="/my-goals/edit"
           className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
         >
           Edit goals
         </Link>
         <Link
-          href="/new"
+          href="/my-goals/updates/new"
           className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
         >
           Post an update
         </Link>
         <Link
-          href={`/progress/${currentYear}`}
+          href={`/my-goals/progress/${currentYear}`}
           className="inline-flex items-center justify-center rounded border border-white/40 px-4 py-2 hover:bg-white/10 transition"
         >
           Progress graph ({currentYear})
@@ -226,7 +226,7 @@ export default async function Home() {
           <p className="font-medium mb-2">No goals yet.</p>
           <p className="mb-4">Create your first goals before adding monthly updates.</p>
           <Link
-            href="/goals"
+            href="/my-goals/edit"
             className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
           >
             Set up goals
