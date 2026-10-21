@@ -64,9 +64,11 @@ export default function SiteMenu({ items, label = "Open menu", children }: SiteM
         aria-controls={menuId}
         aria-label={label}
         onClick={() => setOpen((current) => !current)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        className="inline-flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded bg-white hover:bg-gray-100 focus:outline-none"
       >
-        <span aria-hidden="true" className="text-lg leading-none">☰</span>
+        <span aria-hidden="true" className="h-1 w-6 rounded-full bg-[#0415ae]" />
+        <span aria-hidden="true" className="h-1 w-6 rounded-full bg-[#0415ae]" />
+        <span aria-hidden="true" className="h-1 w-6 rounded-full bg-[#0415ae]" />
       </button>
 
       {open ? (

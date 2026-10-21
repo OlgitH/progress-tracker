@@ -6,6 +6,7 @@ export interface NavItem {
 
 export function getNavItems(year: number): NavItem[] {
   return [
+    { href: "/", label: "Home" },
     {
       href: "/social-exchange",
       label: "Social Exchange dashboard",

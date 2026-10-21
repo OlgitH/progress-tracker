@@ -11,6 +11,7 @@ const notices: Record<string, { tone: "ok" | "warn"; text: string }> = {
     tone: "warn",
     text: "Exchange logged. We couldn't send the Slack message, so you may want to ask them to add their feedback yourself.",
   },
+  deleted: { tone: "ok", text: "Exchange deleted." },
   saved: { tone: "ok", text: "Exchange logged. Thank you!" },
 };
 

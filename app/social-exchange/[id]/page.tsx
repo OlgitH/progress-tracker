@@ -3,9 +3,11 @@ import { notFound, redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { getCurrentMember } from "@/lib/members";
 import { formatHours } from "@/lib/social-exchange";
+import DeleteExchangeButton from "./delete-button";
 
 interface ExchangeDetail {
   id: string;
+  seed_ref: string | null;
   hours: number;
   exchanged_on: string;
   description: string;
@@ -59,7 +61,7 @@ export default async function ExchangeDetailPage({
   const { data } = await supabase
     .from("social_exchanges")
     .select(
-      "id, hours, exchanged_on, description, social_value, value_to_exchangee, value_to_exchanger, exchangee_comments, exchanger_comments, exchanger_responded_at, created_at, exchanger:members!social_exchanges_exchanger_id_fkey(id, full_name), exchangee:members!social_exchanges_exchangee_id_fkey(id, full_name)"
+      "id, seed_ref, hours, exchanged_on, description, social_value, value_to_exchangee, value_to_exchanger, exchangee_comments, exchanger_comments, exchanger_responded_at, created_at, exchanger:members!social_exchanges_exchanger_id_fkey(id, full_name), exchangee:members!social_exchanges_exchangee_id_fkey(id, full_name)"
     )
     .eq("id", id)
     .maybeSingle();
@@ -81,6 +83,12 @@ export default async function ExchangeDetailPage({
           Back to Social Exchange
         </Link>
       </header>
+
+      {notice === "delete-failed" ? (
+        <p role="alert" className="mb-6 rounded border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800">
+          Couldn&apos;t delete this exchange. Only the person who logged it can delete it.
+        </p>
+      ) : null}
 
       {notice === "draft" ? (
         <p role="status" className="mb-6 rounded border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900">
@@ -133,6 +141,12 @@ export default async function ExchangeDetailPage({
           <Field label="Comments">{text(exchange.exchanger_comments)}</Field>
         </dl>
       </section>
+
+      {exchange.exchangee?.id === me.id && !exchange.seed_ref ? (
+        <div className="mt-8">
+          <DeleteExchangeButton exchangeId={exchange.id} />
+        </div>
+      ) : null}
     </main>
   );
 }
