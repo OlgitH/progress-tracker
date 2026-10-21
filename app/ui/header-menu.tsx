@@ -7,6 +7,7 @@ import { getCurrentMember } from "@/lib/members";
 import SignOutButton from "@/app/ui/sign-out-button";
 import SiteMenu from "@/app/ui/site-menu";
 import { getNavItems } from "@/lib/nav";
+import { primaryButtonClass } from "@/lib/styles";
 
 export default function HeaderMenu({ className = "" }: { className?: string }) {
   const pathname = usePathname();
@@ -56,7 +57,7 @@ export default function HeaderMenu({ className = "" }: { className?: string }) {
         label="Open main navigation menu"
         items={getNavItems(year)}
       >
-        <SignOutButton className="w-full text-left rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100" />
+        <SignOutButton className={`${primaryButtonClass} w-full`} />
       </SiteMenu>
     </div>
   );

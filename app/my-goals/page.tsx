@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { primaryButtonClass } from "@/lib/styles";
 
 interface UpdateItem {
   id: string;
@@ -169,21 +170,15 @@ export default async function Home() {
     });
   }
 
-  const sections = [...sectionMap.values()].sort((left, right) => {
-    if (left.legacy !== right.legacy) {
-      return left.legacy ? 1 : -1;
-    }
+  const sections = [...sectionMap.values()]
+    .filter((section) => !section.archivedAt)
+    .sort((left, right) => {
+      if (left.legacy !== right.legacy) {
+        return left.legacy ? 1 : -1;
+      }
 
-    if (left.archivedAt && !right.archivedAt) {
-      return 1;
-    }
-
-    if (!left.archivedAt && right.archivedAt) {
-      return -1;
-    }
-
-    return left.label.localeCompare(right.label);
-  });
+      return left.label.localeCompare(right.label);
+    });
 
   return (
     <main id="main-content" className="max-w-6xl mx-auto p-8" tabIndex={-1}>
@@ -199,7 +194,7 @@ export default async function Home() {
       <div className="mb-8 flex flex-wrap gap-3">
         <Link
           href="/my-goals/edit"
-          className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
+          className={primaryButtonClass}
         >
           Edit goals
         </Link>
@@ -217,7 +212,7 @@ export default async function Home() {
           <p className="mb-4">Create your first goals before adding monthly updates.</p>
           <Link
             href="/my-goals/edit"
-            className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
+            className={primaryButtonClass}
           >
             Set up goals
           </Link>
@@ -229,12 +224,7 @@ export default async function Home() {
           <section key={section.key} className="border rounded-xl p-6 shadow-sm bg-[darkblue]">
             <div className="flex items-center gap-3 mb-6 flex-wrap">
               <h2 className="text-2xl font-bold tracking-tight">{section.label}</h2>
-              {section.archivedAt && !section.legacy && (
-                <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                  Archived
-                </span>
-              )}
-              {!section.archivedAt && !section.legacy && (
+              {!section.legacy && (
                 <Link
                   href={`/my-goals/updates/new?goal=${section.key}`}
                   className="ml-auto inline-flex items-center justify-center rounded bg-black px-3 py-1.5 text-sm text-white hover:bg-gray-800 transition"

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { getCurrentMember } from "@/lib/members";
 import { formatHours, summariseExchanges, type ExchangeRow } from "@/lib/social-exchange";
+import { primaryButtonClass } from "@/lib/styles";
 
 const notices: Record<string, { tone: "ok" | "warn"; text: string }> = {
   notified: { tone: "ok", text: "Exchange logged, and they've been asked on Slack to give their feedback. Thank you!" },
@@ -109,7 +110,7 @@ export default async function SocialExchangePage({
       <div className="mb-8">
         <Link
           href="/social-exchange/new"
-          className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
+          className={primaryButtonClass}
         >
           Log a Social Exchange
         </Link>
