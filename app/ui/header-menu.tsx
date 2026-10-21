@@ -13,6 +13,7 @@ export default function HeaderMenu({ className = "" }: { className?: string }) {
   const pathname = usePathname();
   const [name, setName] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [isSuperUser, setIsSuperUser] = useState(false);
   const hidden = pathname.startsWith("/login") || pathname.startsWith("/auth");
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function HeaderMenu({ className = "" }: { className?: string }) {
       if (cancelled) return;
       setName(member?.full_name ?? user?.email ?? null);
       setEmail(member ? (user?.email ?? null) : null);
+      setIsSuperUser(member?.is_super_user ?? false);
     }
 
     loadName();
@@ -55,7 +57,7 @@ export default function HeaderMenu({ className = "" }: { className?: string }) {
       ) : null}
       <SiteMenu
         label="Open main navigation menu"
-        items={getNavItems(year)}
+        items={getNavItems(year, isSuperUser)}
       >
         <SignOutButton className={`${primaryButtonClass} w-full`} />
       </SiteMenu>

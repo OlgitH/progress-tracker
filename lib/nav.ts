@@ -4,7 +4,7 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-export function getNavItems(year: number): NavItem[] {
+export function getNavItems(year: number, isSuperUser = false): NavItem[] {
   return [
     { href: "/", label: "Home" },
     {
@@ -13,5 +13,6 @@ export function getNavItems(year: number): NavItem[] {
       children: [{ href: "/social-exchange/new", label: "Log a Social Exchange" }],
     },
     { href: "/my-goals", label: "My Studio goals" },
+    ...(isSuperUser ? [{ href: "/admin", label: "All members (super user)" }] : []),
   ];
 }

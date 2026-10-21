@@ -3,6 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 export interface Member {
   id: string;
   full_name: string;
+  is_super_user: boolean;
 }
 
 /**
@@ -16,5 +17,5 @@ export async function getCurrentMember(supabase: SupabaseClient): Promise<Member
     return null;
   }
 
-  return { id: data.id, full_name: data.full_name };
+  return { id: data.id, full_name: data.full_name, is_super_user: data.is_super_user === true };
 }
