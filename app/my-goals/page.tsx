@@ -190,7 +190,7 @@ export default async function Home() {
       <header className="flex justify-between items-center mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">My Studio goals</h1>
-          <p className="text-sm text-gray-500 mt-2 max-w-2xl">
+          <p className="text-sm text-white mt-2 max-w-md">
             Here you can create up to 10 goals that you aim to achieve from working at The Studio. Try to use SMART goals (Specific, Measurable, Achievable, Relevant and Time-bound). Every month you should try to post an update on your goals when you have done something towards them. This is to help you and us gain a clearer picture of the value you are getting from the Studio.
           </p>
         </div>
@@ -202,12 +202,6 @@ export default async function Home() {
           className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
         >
           Edit goals
-        </Link>
-        <Link
-          href="/my-goals/updates/new"
-          className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:bg-gray-800 transition"
-        >
-          Post an update
         </Link>
         <Link
           href={`/my-goals/progress/${currentYear}`}
@@ -240,9 +234,14 @@ export default async function Home() {
                   Archived
                 </span>
               )}
-              <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                {section.updates.length} {section.updates.length === 1 ? "update" : "updates"}
-              </span>
+              {!section.archivedAt && !section.legacy && (
+                <Link
+                  href={`/my-goals/updates/new?goal=${section.key}`}
+                  className="ml-auto inline-flex items-center justify-center rounded bg-black px-3 py-1.5 text-sm text-white hover:bg-gray-800 transition"
+                >
+                  Post an update
+                </Link>
+              )}
             </div>
 
             {section.updates.length === 0 ? (

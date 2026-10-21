@@ -54,7 +54,11 @@ export default function NewEntryPage() {
 
       const activeGoals = goalRows ?? [];
       setGoals(activeGoals);
-      setGoalId((currentGoalId) => currentGoalId || activeGoals[0]?.id || "");
+      const requestedGoalId = new URLSearchParams(window.location.search).get("goal");
+      const initialGoalId = activeGoals.some((item) => item.id === requestedGoalId)
+        ? requestedGoalId
+        : activeGoals[0]?.id;
+      setGoalId((currentGoalId) => currentGoalId || initialGoalId || "");
     }
 
     loadUserAndGoals();

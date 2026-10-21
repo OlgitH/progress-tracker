@@ -11,6 +11,7 @@ import { getNavItems } from "@/lib/nav";
 export default function HeaderMenu({ className = "" }: { className?: string }) {
   const pathname = usePathname();
   const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const hidden = pathname.startsWith("/login") || pathname.startsWith("/auth");
 
   useEffect(() => {
@@ -22,14 +23,12 @@ export default function HeaderMenu({ className = "" }: { className?: string }) {
 
     async function loadName() {
       const member = await getCurrentMember(supabase);
-      if (member) {
-        if (!cancelled) setName(member.full_name);
-        return;
-      }
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!cancelled) setName(user?.email ?? null);
+      if (cancelled) return;
+      setName(member?.full_name ?? user?.email ?? null);
+      setEmail(member ? (user?.email ?? null) : null);
     }
 
     loadName();
@@ -47,7 +46,12 @@ export default function HeaderMenu({ className = "" }: { className?: string }) {
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {name ? <span className="text-sm text-white">Signed in as {name}</span> : null}
+      {name ? (
+        <div className="text-right">
+          <p className="text-sm text-white">Signed in as {name}</p>
+          {email ? <p className="text-xs text-white/70">{email}</p> : null}
+        </div>
+      ) : null}
       <SiteMenu
         label="Open main navigation menu"
         items={getNavItems(year)}

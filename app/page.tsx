@@ -34,19 +34,10 @@ export default async function Home() {
     redirect("/login");
   }
 
-  const userLabel =
-    user.email ||
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    "Signed in with Slack";
-
   return (
     <main id="main-content" className="max-w-6xl mx-auto p-8" tabIndex={-1}>
       <header className="flex justify-between items-center mb-8 gap-4 flex-wrap">
-        <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">My Studio</h1>
-          <p className="text-sm text-gray-500 mt-1 hidden sm:block">{userLabel}</p>
-        </div>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">My Studio</h1>
       </header>
 
       <div className="grid gap-6 md:grid-cols-2">

@@ -11,14 +11,14 @@ interface SiteMenuProps {
 }
 
 const linkClass =
-  "block rounded px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black";
+  "block rounded px-3 py-2 text-base font-semibold text-[#0415ae] hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black";
 
 function MenuList({ items, onNavigate, nested = false }: { items: MenuItem[]; onNavigate: () => void; nested?: boolean }) {
   return (
     <ul className={nested ? "ml-3 mt-1 space-y-1 border-l border-gray-200 pl-2" : "space-y-1"}>
       {items.map((item) => (
         <li key={item.href}>
-          <Link href={item.href} onClick={onNavigate} className={`${linkClass} ${nested ? "" : "font-medium"}`}>
+          <Link href={item.href} onClick={onNavigate} className={linkClass}>
             {item.label}
           </Link>
           {item.children?.length ? <MenuList items={item.children} onNavigate={onNavigate} nested /> : null}
@@ -75,7 +75,7 @@ export default function SiteMenu({ items, label = "Open menu", children }: SiteM
         <nav
           id={menuId}
           aria-label="Main navigation"
-          className="absolute right-0 mt-2 w-56 rounded-lg border border-gray-200 bg-white p-2 shadow-lg z-20"
+          className="absolute right-0 mt-2 w-64 rounded-lg border border-gray-200 bg-white p-2 shadow-lg z-20"
         >
           <MenuList items={items} onNavigate={() => setOpen(false)} />
           {children ? <div className="mt-2 pt-1 border-t border-gray-100">{children}</div> : null}
