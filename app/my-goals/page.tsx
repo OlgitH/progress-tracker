@@ -61,12 +61,6 @@ export default async function Home() {
     redirect("/login");
   }
 
-  const userLabel =
-    user.email ||
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    "Signed in with Slack";
-
   const [goalsResult, updatesResult] = await Promise.all([
     supabase
       .from("goals")
@@ -196,7 +190,9 @@ export default async function Home() {
       <header className="flex justify-between items-center mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">My Studio goals</h1>
-          <p className="text-sm text-gray-500 mt-1 hidden sm:block">{userLabel}</p>
+          <p className="text-sm text-gray-500 mt-2 max-w-2xl">
+            Here you can create up to 10 goals that you aim to achieve from working at The Studio. Try to use SMART goals (Specific, Measurable, Achievable, Relevant and Time-bound). Every month you should try to post an update on your goals when you have done something towards them. This is to help you and us gain a clearer picture of the value you are getting from the Studio.
+          </p>
         </div>
       </header>
 
@@ -237,7 +233,7 @@ export default async function Home() {
       <div className="grid gap-8">
         {sections.map((section) => (
           <section key={section.key} className="border rounded-xl p-6 shadow-sm bg-[darkblue]">
-            <div className="flex items-center gap-3 mb-6 border-b pb-4 flex-wrap">
+            <div className="flex items-center gap-3 mb-6 flex-wrap">
               <h2 className="text-2xl font-bold tracking-tight">{section.label}</h2>
               {section.archivedAt && !section.legacy && (
                 <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
@@ -254,7 +250,7 @@ export default async function Home() {
                 No updates yet for this goal.
               </div>
             ) : (
-              <div className="grid gap-4 pl-4 border-l-2 border-gray-100">
+              <div className="grid gap-4">
                 {section.updates.map((item) => (
                   <div key={item.id} className={`border rounded-lg p-5 ${scoreColorClass(item.score)}`}>
                     <div className="flex justify-between items-start mb-3 gap-3 flex-wrap">
