@@ -246,43 +246,28 @@ export default async function Home() {
             </div>
 
             {section.updates.length === 0 ? (
-              <div className="rounded-lg border-gray-200 p-5 text-sm text-gray-500">
-                No updates yet for this goal.
-              </div>
+              <p className="text-sm text-gray-500">No updates</p>
             ) : (
-              <div className="grid gap-4">
+              <ul className="flex flex-wrap gap-2">
                 {section.updates.map((item) => (
-                  <div key={item.id} className={`border rounded-lg p-5 ${scoreColorClass(item.score)}`}>
-                    <div className="flex justify-between items-start mb-3 gap-3 flex-wrap">
-                      <div className="text-sm font-medium text-gray-600">
-                        {new Date(item.created_at).toLocaleDateString(undefined, {
+                  <li key={item.id}>
+                    <Link
+                      href={`/my-goals/updates/${item.id}`}
+                      aria-label={`Update posted ${new Date(item.created_at).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })}, progress score ${item.score} out of 10`}
+                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium hover:opacity-80 transition ${scoreColorClass(item.score)}`}
+                    >
+                      <span className="font-semibold">Update</span>
+                      <span>
+                        {new Date(item.created_at).toLocaleDateString("en-GB", {
                           year: "numeric",
-                          month: "long",
+                          month: "short",
                           day: "numeric",
                         })}
-                      </div>
-                      <div className="flex items-center gap-1.5 bg-white/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-inherit shadow-2xs">
-                        <span className="text-xs text-gray-500 font-medium">Score:</span>
-                        <span className="text-lg font-black">{item.score}/10</span>
-                      </div>
-                    </div>
-
-                    {item.achievements && (
-                      <div className="mb-3">
-                        <h4 className="text-sm font-semibold opacity-85 mb-1">What I did this month</h4>
-                        <p className="text-sm leading-relaxed whitespace-pre-line opacity-95">{item.achievements}</p>
-                      </div>
-                    )}
-
-                    {item.notes && (
-                      <div className="mt-2 pt-2 border-t border-black/5">
-                        <h4 className="text-sm font-semibold opacity-85 mb-1">Notes</h4>
-                        <p className="text-sm leading-relaxed whitespace-pre-line opacity-95">{item.notes}</p>
-                      </div>
-                    )}
-                  </div>
+                      </span>
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
           </section>
         ))}

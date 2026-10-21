@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -177,6 +178,9 @@ export default function GoalsPage() {
       <header className="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold mt-2">My goals</h1>
+          <Link href="/my-goals" className="text-sm underline text-white/80">
+            Back to My Studio goals
+          </Link>
           <p className="text-sm text-gray-600 mt-1">
             Set up to 8 active goals. Removing a goal archives it, so existing updates keep their history.
           </p>

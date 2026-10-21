@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -120,7 +121,12 @@ export default function NewEntryPage() {
   return (
     <main id="main-content" className="max-w-xl mx-auto p-8" tabIndex={-1}>
       <header className="flex justify-between items-center mb-6 gap-3">
-        <h1 className="text-3xl font-bold">Monthly Goal Check-In</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Monthly Goal Check-In</h1>
+          <Link href="/my-goals" className="text-sm underline text-white/80">
+            Back to My Studio goals
+          </Link>
+        </div>
       </header>
 
       {goals.length === 0 ? (
@@ -153,10 +159,14 @@ export default function NewEntryPage() {
         </div>
 
         <div>
-          <label htmlFor="score-input" className="block mb-2 font-medium">Score (1-10)</label>
+          <label htmlFor="score-input" className="block mb-1 font-medium">Progress score (1-10)</label>
+          <p id="score-help" className="text-sm text-gray-500 mb-2">
+            How do you rate your progress towards this goal out of 10 at this point in time?
+          </p>
 
           <input
             id="score-input"
+            aria-describedby="score-help"
             type="number"
             min={1}
             max={10}

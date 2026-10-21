@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 
 interface GoalRef {
@@ -314,6 +315,9 @@ export default function ProgressYearPage() {
       <header className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold mt-2">Progress graph for {year}</h1>
+          <Link href="/my-goals" className="text-sm underline text-white/80">
+            Back to My Studio goals
+          </Link>
           <p className="text-sm text-gray-600 mt-1">Animated monthly trend based on your yearly updates.</p>
         </div>
       </header>
